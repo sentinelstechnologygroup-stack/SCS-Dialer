@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function member(companyId) {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/companies/$(companyId)/members/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/companies/$(companyId)/members/$(request.auth.uid)).data.status == 'active';
+    }
+    match /companies/{companyId} {
+      allow read: if member(companyId);
+      allow write: if false;
+      match /members/{uid} {
+        allow read: if member(companyId) && request.auth.uid == uid;
+        allow write: if false;
+      }
+      match /contacts/{id} {
+        allow read: if member(companyId) && (resource.data.visibility == 'company' || resource.data.ownerUid == request.auth.uid);
+        allow write: if false;
+      }
+      match /calls/{id} {
+        allow read: if member(companyId) && resource.data.assignedUid == request.auth.uid;
+        allow write: if false;
+      }
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
