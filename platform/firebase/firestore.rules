@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function member(c) { return request.auth != null && request.auth.token.email_verified == true && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.companyId == c && exists(/databases/$(database)/documents/companies/$(c)/members/$(request.auth.uid)) && get(/databases/$(database)/documents/companies/$(c)/members/$(request.auth.uid)).data.active == true; }
+  function admin(c) { return member(c) && get(/databases/$(database)/documents/companies/$(c)/members/$(request.auth.uid)).data.role == 'company_admin'; }
+  match /companies/{c} { allow read: if member(c); allow write: if false;
+   match /members/{uid} { allow read: if member(c) && (request.auth.uid == uid || admin(c)); allow write: if false; }
+   match /contacts/{id} { allow read: if member(c); allow write: if false; }
+   match /calls/{id} { allow read: if member(c) && (resource.data.assignedUserId == request.auth.uid || admin(c)); allow write: if false; }
+   match /messages/{id} { allow read: if member(c) && (resource.data.assignedUserId == request.auth.uid || admin(c)); allow write: if false; }
+   match /recordings/{id} { allow read: if admin(c); allow write: if false; }
+   match /audit/{id} { allow read: if admin(c); allow write: if false; }
+  }
+  match /{document=**} { allow read,write: if false; }
+ }
+}

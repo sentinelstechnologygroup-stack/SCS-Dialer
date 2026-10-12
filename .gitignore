@@ -1,6 +1,12 @@
 node_modules/
 dist/
-*-debug.log
-.firebase/
-.env*
+.env
+.env.*
 !.env.example
+*.log
+.firebase/
+coverage/
+*.pem
+*.key
+*service-account*.json
+*serviceAccount*.json

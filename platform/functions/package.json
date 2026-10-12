@@ -1,0 +1,1 @@
+{"name":"scs-functions","private":true,"type":"module","main":"src/index.js","engines":{"node":"22"},"scripts":{"build":"node --check src/index.js && node --check src/authorization.js","lint":"eslint src tests","test":"node --test tests/*.test.js"},"dependencies":{"firebase-admin":"^13.0.0","firebase-functions":"^6.0.0"},"devDependencies":{"eslint":"^9.19.0"}}

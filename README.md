@@ -1,13 +1,13 @@
-# Sentinels Communication Systems (SCS)
+# SCS-Dialer
 
-Owned by **Sentinels Technology Group**. Standalone white-label phone platform; MDX is the first client. Golden Marketing Services branding is a demo of the shared application, not a provisioned account.
+Standalone SCS local migration. Owned by Sentinels Technology Group.
 
-Run `npm install`, `npm run dev`, `npm test`, and `npm run build` in this directory. The application is independent of the Atlas UI and Base44 runtime. All current interaction is explicitly simulated. Company selection is a demo control, not production authorization.
+Run npm install then npm run dev. Shared package: platform.
+.env.local explicitly selects fictional demo mode; production is disabled until membership-controlled data/provider acceptance. Never put provider secrets in VITE variables.
 
-Data lives under `companies/{companyId}`. Firebase membership is server-provisioned; client self-registration, membership changes, credentials, and provider operations are denied. Production integration must derive company membership from verified authentication and never trust a client company ID by itself. Privileged Functions require Firebase Auth, App Check, explicit operation permissions, idempotency, and audit records. Storage is closed until access-controlled recording delivery is implemented.
+See platform/ACCEPTANCE.md for gaps and verified reference checkpoints. Retired prototype resources are archived outside the active projects. Production remains disabled. GitHub upload was authorized on October 11, 2026.
 
-Atlas/GMS adapters consume versioned company-scoped events. MDX fuel/dispatch workflows remain in Atlas. Adapter authentication, delivery, retries and CRM writes are not implemented yet. Use a separate Firebase project for the product; do not deploy these rules over Atlas rules.
 
-Security test: `npx firebase emulators:exec --project demo-sentinels-phone --only firestore "node --test tests/isolation.emulator.js"`.
+The platform package is bundled under platform/ so each repository builds independently. SCS-Admin/platform is the canonical shared backend/package; SCS-Dialer/platform is a matching snapshot. Synchronize shared changes deliberately; deploy the shared backend only once. Secrets and local environment files are excluded. Use demo mode locally, or configure the separate SCS Firebase project for acceptance testing.
 
-Next: invitation and membership backend, authenticated workspace discovery, repositories and integration adapters, contacts and inboxes, receptionist/admin workflows, Telnyx provisioning/events, native mobile capabilities, and end-to-end acceptance. Live calling, texting, recordings, push and native device integration are not connected.
+For a simulated local preview, create .env.local containing VITE_SCS_MODE=demo, then run npm install and npm run dev. This does not enable live services. Without demo mode, production remains blocked until Firebase configuration and acceptance.

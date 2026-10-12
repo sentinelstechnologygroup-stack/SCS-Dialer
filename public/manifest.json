@@ -1,0 +1,8 @@
+{
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#121c32",
+  "name": "SCS-Dialer",
+  "short_name": "SCS",
+  "background_color": "#ffffff"
+}

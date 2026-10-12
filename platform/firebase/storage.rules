@@ -1,0 +1,8 @@
+rules_version = '2';
+service firebase.storage {
+ match /b/{bucket}/o {
+  function member(c) { return request.auth != null && request.auth.token.email_verified == true && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.companyId == c && firestore.exists(/databases/(default)/documents/companies/$(c)/members/$(request.auth.uid)) && firestore.get(/databases/(default)/documents/companies/$(c)/members/$(request.auth.uid)).data.active == true; }
+  match /companies/{c}/recordings/{file} { allow read: if member(c) && firestore.get(/databases/(default)/documents/companies/$(c)/members/$(request.auth.uid)).data.role == 'company_admin'; allow write: if false; }
+  match /{path=**} { allow read,write: if false; }
+ }
+}

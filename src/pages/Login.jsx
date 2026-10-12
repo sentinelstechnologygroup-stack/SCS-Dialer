@@ -1,0 +1,1 @@
+import {AuthScreen} from '@scs/platform/auth'; export default function Page(){return <AuthScreen mode='login'/>}
